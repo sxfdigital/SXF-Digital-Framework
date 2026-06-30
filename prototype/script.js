@@ -2,12 +2,16 @@ console.log("SXF script loaded");
 
 const startButton = document.getElementById("startButton");
 const nextButton = document.getElementById("nextButton");
+const restartButton = document.getElementById("restartButton");
 
 const screenTitle = document.getElementById("screenTitle");
 const screenDescription = document.getElementById("screenDescription");
 const questionArea = document.getElementById("questionArea");
 const questionLabel = document.getElementById("questionLabel");
 const answerInput = document.getElementById("answerInput");
+
+const progressContainer = document.getElementById("progressContainer");
+const progressBar = document.getElementById("progressBar");
 
 const questions = [
   {
@@ -44,19 +48,30 @@ function showQuestion() {
   answerInput.focus();
 
   screenDescription.textContent = `Question ${currentQuestionIndex + 1} of ${questions.length}`;
+
+  const progressPercent = ((currentQuestionIndex + 1) / questions.length) * 100;
+  progressBar.style.width = progressPercent + "%";
 }
 
-startButton.addEventListener("click", function () {
+function startInterview() {
+  currentQuestionIndex = 0;
+
+  for (const key in answers) {
+    delete answers[key];
+  }
+
   screenTitle.textContent = "Business Identity";
 
   questionArea.classList.remove("hidden");
   startButton.classList.add("hidden");
   nextButton.classList.remove("hidden");
+  restartButton.classList.add("hidden");
+  progressContainer.classList.remove("hidden");
 
   showQuestion();
-});
+}
 
-nextButton.addEventListener("click", function () {
+function handleNextQuestion() {
   const answer = answerInput.value.trim();
 
   if (answer === "") {
@@ -74,13 +89,15 @@ nextButton.addEventListener("click", function () {
   } else {
     finishInterview();
   }
-});
+}
 
 function finishInterview() {
   questionArea.classList.add("hidden");
   nextButton.classList.add("hidden");
+  restartButton.classList.remove("hidden");
 
   screenTitle.textContent = "Discovery Complete";
+
   screenDescription.innerHTML = `
     Great. We now have the first basic profile for this business.
     <br><br>
@@ -90,5 +107,33 @@ function finishInterview() {
     <strong>Main Website Goal:</strong> ${answers.mainGoal}
   `;
 
+  progressBar.style.width = "100%";
+
   console.log("Discovery answers:", answers);
 }
+
+function restartInterview() {
+  currentQuestionIndex = 0;
+
+  for (const key in answers) {
+    delete answers[key];
+  }
+
+  screenTitle.textContent = "SXF Discovery Engine";
+  screenDescription.textContent =
+    "Let’s understand your business before building your website.";
+
+  questionArea.classList.add("hidden");
+  nextButton.classList.add("hidden");
+  restartButton.classList.add("hidden");
+  startButton.classList.remove("hidden");
+
+  progressBar.style.width = "0%";
+  progressContainer.classList.add("hidden");
+
+  answerInput.value = "";
+}
+
+startButton.addEventListener("click", startInterview);
+nextButton.addEventListener("click", handleNextQuestion);
+restartButton.addEventListener("click", restartInterview);
