@@ -90,28 +90,45 @@ function handleNextQuestion() {
     finishInterview();
   }
 }
-
 function finishInterview() {
   questionArea.classList.add("hidden");
   nextButton.classList.add("hidden");
   restartButton.classList.remove("hidden");
 
-  screenTitle.textContent = "Discovery Complete";
+  screenTitle.textContent = "SXF Discovery Report";
 
   screenDescription.innerHTML = `
-    Great. We now have the first basic profile for this business.
-    <br><br>
-    <strong>Business:</strong> ${answers.businessName}<br>
-    <strong>Description:</strong> ${answers.businessDescription}<br>
-    <strong>Ideal Customer:</strong> ${answers.idealCustomer}<br>
-    <strong>Main Website Goal:</strong> ${answers.mainGoal}
+    <div class="report">
+      <p class="report-intro">
+        Great. We now have the first basic business profile for this website project.
+      </p>
+
+      <div class="report-item">
+        <span>Business Name</span>
+        <strong>${answers.businessName}</strong>
+      </div>
+
+      <div class="report-item">
+        <span>Business Description</span>
+        <strong>${answers.businessDescription}</strong>
+      </div>
+
+      <div class="report-item">
+        <span>Ideal Customer</span>
+        <strong>${answers.idealCustomer}</strong>
+      </div>
+
+      <div class="report-item">
+        <span>Main Website Goal</span>
+        <strong>${answers.mainGoal}</strong>
+      </div>
+    </div>
   `;
 
   progressBar.style.width = "100%";
 
   console.log("Discovery answers:", answers);
 }
-
 function restartInterview() {
   currentQuestionIndex = 0;
 
