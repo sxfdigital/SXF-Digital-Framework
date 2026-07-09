@@ -97,33 +97,53 @@ function finishInterview() {
 
   screenTitle.textContent = "SXF Discovery Report";
 
-  screenDescription.innerHTML = `
-    <div class="report">
-      <p class="report-intro">
-        Great. We now have the first basic business profile for this website project.
-      </p>
+  screenDescription.textContent = "";
 
-      <div class="report-item">
-        <span>Business Name</span>
-        <strong>${answers.businessName}</strong>
-      </div>
+  const report = document.createElement("div");
+  report.className = "report";
 
-      <div class="report-item">
-        <span>Business Description</span>
-        <strong>${answers.businessDescription}</strong>
-      </div>
+  const reportIntro = document.createElement("p");
+  reportIntro.className = "report-intro";
+  reportIntro.textContent =
+    "Great. We now have the first basic business profile for this website project.";
 
-      <div class="report-item">
-        <span>Ideal Customer</span>
-        <strong>${answers.idealCustomer}</strong>
-      </div>
+  report.appendChild(reportIntro);
 
-      <div class="report-item">
-        <span>Main Website Goal</span>
-        <strong>${answers.mainGoal}</strong>
-      </div>
-    </div>
-  `;
+  const reportItems = [
+    {
+      label: "Business Name",
+      answer: answers.businessName
+    },
+    {
+      label: "Business Description",
+      answer: answers.businessDescription
+    },
+    {
+      label: "Ideal Customer",
+      answer: answers.idealCustomer
+    },
+    {
+      label: "Main Website Goal",
+      answer: answers.mainGoal
+    }
+  ];
+
+  reportItems.forEach((item) => {
+    const reportItem = document.createElement("div");
+    reportItem.className = "report-item";
+
+    const label = document.createElement("span");
+    label.textContent = item.label;
+
+    const answer = document.createElement("strong");
+    answer.textContent = item.answer;
+
+    reportItem.appendChild(label);
+    reportItem.appendChild(answer);
+    report.appendChild(reportItem);
+  });
+
+  screenDescription.appendChild(report);
 
   progressBar.style.width = "100%";
 
